@@ -182,12 +182,11 @@ class TestCases(unittest.TestCase):
         self.assertEqual(len(results), 20)
 
         # check that the variable you saved after calling the function is a list
-        type_list = str(type(results))
-        self.assertEqual(type_list[8:12], 'list')
+        self.assertIsInstance(results, list)
 
         # check that each item in the list is a tuple
         for result in results:
-            self.assertEqual(str(type(result))[8:13], 'tuple')
+            self.assertIsInstance(result, tuple)
 
         # check that the first book and author tuple is correct (open search_results.htm and find it)
         self.assertEqual((results[0][0]), 'Harry Potter and the Deathly Hallows (Harry Potter, #7)')
@@ -198,8 +197,7 @@ class TestCases(unittest.TestCase):
 
     def test_get_search_links(self):
         # check that TestCases.search_urls is a list
-        type_list = str(type(self.search_urls))
-        self.assertEqual(type_list[8:12], 'list')
+        self.assertIsInstance(self.search_urls, list)
 
         # check that the length of TestCases.search_urls is correct (10 URLs)
         self.assertEqual(len(self.search_urls), 10)
@@ -207,10 +205,11 @@ class TestCases(unittest.TestCase):
         # check that each URL in the TestCases.search_urls is a string
         # check that each URL contains the correct url for Goodreads.com followed by /book/show/
         for url in self.search_urls:
-            self.assertEqual(str(type(url))[8:13], 'string')
+            self.assertIsInstance(url, str)
             starts_with_list = []
             if url.startswith("https://www.goodreads.com/book/show"):
                 starts_with_list.append(url)
+        
         self.assertEqual(len(starts_with_list), 10)
 
 
@@ -234,30 +233,38 @@ class TestCases(unittest.TestCase):
 
             # check that the first two elements in the tuple are string
             for item in summaries:
-                self.assertEqual(type(item[0])[8:13], 'string')
-                self.assertEqual(type(item[1])[8:13], 'string')
+                self.assertIsInstance(item[0], str)
+                self.assertIsInstance(item[1], str)
 
             # check that the third element in the tuple, i.e. pages is an int
             for item in summaries:
-                self.assertEqual(type(item[2])[8:13], 'tuple')
+                 self.assertIsInstance(item[2], int)
 
             # check that the first book in the search has 337 pages
-            print(summaries[0])
+            print(summaries[2][0])
 
 
     def test_summarize_best_books(self):
         # call summarize_best_books and save it to a variable
+        summarized = summarize_best_books("best_books_2020.htm")
+
 
         # check that we have the right number of best books (20)
+        self.assertEqual(len(summarized), 20)
 
             # assert each item in the list of best books is a tuple
+        for item in summarized:
+            self.assertIsInstance(item, tuple)
 
             # check that each tuple has a length of 3
+        for item in summarized:
+            self.assertIsInstance(len(item), 3)
 
         # check that the first tuple is made up of the following 3 strings:'Fiction', "The Midnight Library", 'https://www.goodreads.com/choiceawards/best-fiction-books-2020'
+        self.assertEqual(summarized[0], ('Fiction', "The Midnight Library", 'https://www.goodreads.com/choiceawards/best-fiction-books-2020'))
 
         # check that the last tuple is made up of the following 3 strings: 'Picture Books', 'A Beautiful Day in the Neighborhood: The Poetry of Mister Rogers', 'https://www.goodreads.com/choiceawards/best-picture-books-2020'
-        pass
+        self.assertEqual(summarized[-1], ('Picture Books', "A Beautiful Day in the Neighborhood: The Poetry of Mister Rogers", 'https://www.goodreads.com/choiceawards/best-picture-books-2020'))
 
     def test_write_csv(self):
         # call get_titles_from_search_results on search_results.htm and save the result to a variable
@@ -278,7 +285,6 @@ class TestCases(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    print(get_search_links())
     print(extra_credit("extra_credit.htm"))
     unittest.main(verbosity=2)
 
