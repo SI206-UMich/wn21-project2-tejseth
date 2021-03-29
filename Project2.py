@@ -159,13 +159,22 @@ def write_csv(data, filename):
 
 
 def extra_credit(filepath):
-    """
-    EXTRA CREDIT
-
-    Please see the instructions document for more information on how to complete this function.
-    You do not have to write test cases for this function.
-    """
-    pass
+    with open(filepath) as f:
+        soup = BeautifulSoup(f, "html.parser")
+    tags = soup.find('body')
+    tags2 = tags.find('div', class_ = "content")
+    tags3 = tags2.find('div', class_ = "mainContentContainer")
+    tags4 = tags3.find('div', class_ = 'mainContentFloat')
+    tags5 = tags4.find('div', class_ = 'leftContainer')
+    tags6 = tags5.find('div', class_ = 'last col stacked')
+    tags7 = tags6.find('div', class_ = 'last col')
+    tags8 = tags7.find('div', class_ = "readable stacked").text.strip()
+    regex = "[A-Z][a-z]+. [A-Z][a-z]+"
+    named_entities = []
+    x = re.findall(regex, tags8)
+    for word in x:
+        named_entities.append(word)
+    return named_entities
 
 class TestCases(unittest.TestCase):
 
@@ -294,7 +303,7 @@ class TestCases(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    #print(extra_credit("extra_credit.htm"))
+    print(extra_credit("extra_credit.htm"))
     unittest.main(verbosity=2)
 
 
